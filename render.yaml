@@ -1,7 +1,7 @@
 services:
   - type: web
+    runtime: docker
     name: s3-api-server
-    env: docker
     plan: free
     dockerfilePath: ./Dockerfile
     dockerContext: .
