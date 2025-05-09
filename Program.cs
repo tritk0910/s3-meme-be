@@ -12,7 +12,15 @@ builder.Services.AddControllers();
 // Register Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("https://s3-meme-fe.vercel.app")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services.Configure<S3Settings>(builder.Configuration.GetSection("S3Settings"));
 builder.Services.AddSingleton<IAmazonS3>(sp =>
@@ -42,10 +50,7 @@ var app = builder.Build();
     });
 }
 
-app.UseCors(policy => policy
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
