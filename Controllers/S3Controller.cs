@@ -39,7 +39,7 @@ public partial class S3Controller(IAmazonS3 s3Client, IOptions<S3Settings> s3Set
 
     using var stream = file.OpenReadStream();
 
-    var key = Guid.NewGuid();
+    var key = $"image-{Guid.NewGuid()}";
     var putRequest = new PutObjectRequest
     {
       BucketName = s3Settings.Value.BucketName,
@@ -107,7 +107,7 @@ public partial class S3Controller(IAmazonS3 s3Client, IOptions<S3Settings> s3Set
         Key = key
       };
 
-     var response = await s3Client.GetObjectAsync(getRequest);
+      var response = await s3Client.GetObjectAsync(getRequest);
 
       return Results.File(response.ResponseStream, response.Headers.ContentType, response.Metadata["file-name"]);
     }

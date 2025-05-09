@@ -11,7 +11,7 @@ public partial class S3Controller
   {
     try
     {
-      var key = Guid.NewGuid();
+      var key = $"video-{Guid.NewGuid()}";
       var request = new InitiateMultipartUploadRequest
       {
         BucketName = s3Settings.Value.BucketName,

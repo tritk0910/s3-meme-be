@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: s3-api-server
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerBuildTarget: final
+    envVars:
+      - key: S3Settings__Region
+        value: ${S3_REGION}
+      - key: S3Settings__BucketName
+        value: ${S3_BUCKET_NAME}
+      - key: S3Settings__AccessKey
+        value: ${S3_ACCESS_KEY}
+      - key: S3Settings__SecretAccessKey
+        value: ${S3_SECRET_ACCESS_KEY}
+    ports:
+      - 8080
