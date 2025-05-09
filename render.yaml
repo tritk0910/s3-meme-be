@@ -1,0 +1,16 @@
+services:
+  - type: web
+    runtime: docker
+    name: s3-api-server
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: S3Settings__Region
+        sync: false
+      - key: S3Settings__BucketName
+        sync: false
+      - key: S3Settings__AccessKey
+        sync: false
+      - key: S3Settings__SecretAccessKey
+        sync: false
