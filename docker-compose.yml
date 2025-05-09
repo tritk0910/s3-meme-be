@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - S3Settings__Region=${S3_REGION}
+      - S3Settings__BucketName=${S3_BUCKET_NAME}
+      - S3Settings__AccessKey=${S3_ACCESS_KEY}
+      - S3Settings__SecretAccessKey=${S3_SECRET_ACCESS_KEY}
