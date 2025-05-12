@@ -73,7 +73,16 @@ public partial class S3Controller
 
       var response = await s3Client.CompleteMultipartUploadAsync(request);
 
-      return Results.Ok(new { key, location = response.Location });
+      var url = new GetPreSignedUrlRequest
+      {
+        BucketName = s3Settings.Value.BucketName,
+        Key = $"{key}",
+        Verb = HttpVerb.GET,
+        Expires = DateTime.UtcNow.AddMinutes(15)
+      };
+      string presignedUrl = s3Client.GetPreSignedURL(url);
+
+      return Results.Ok(new { key, location = response.Location, presignedUrl });
     }
     catch (AmazonS3Exception ex)
     {
