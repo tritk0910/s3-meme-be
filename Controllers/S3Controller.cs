@@ -86,7 +86,20 @@ public partial class S3Controller(IAmazonS3 s3Client, IOptions<S3Settings> s3Set
       };
 
       var listResponse = await s3Client.ListObjectsV2Async(listRequest);
-      var images = listResponse.S3Objects.Select(o => new { o.Key, o.LastModified, o.Size }).ToList();
+      var presignedUrls = new List<string>();
+
+      var images = listResponse.S3Objects.Select(o =>
+      {
+        var request = new GetPreSignedUrlRequest
+        {
+          BucketName = s3Settings.Value.BucketName,
+          Key = o.Key,
+          Verb = HttpVerb.GET,
+          Expires = DateTime.UtcNow.AddMinutes(15)
+        };
+        var presignedUrl = s3Client.GetPreSignedURL(request);
+        return new { o.Key, o.LastModified, o.Size, PresignedUrl = presignedUrl };
+      }).ToList();
 
       return Results.Ok(images);
     }

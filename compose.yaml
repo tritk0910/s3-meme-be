@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     environment:
-      - S3Settings__Region=${S3_REGION}
-      - S3Settings__BucketName=${S3_BUCKET_NAME}
-      - S3Settings__AccessKey=${S3_ACCESS_KEY}
-      - S3Settings__SecretAccessKey=${S3_SECRET_ACCESS_KEY}
+      - S3Settings__Region=${S3Settings__Region}
+      - S3Settings__BucketName=${S3Settings__BucketName}
+      - S3Settings__AccessKey=${S3Settings__AccessKey}
+      - S3Settings__SecretAccessKey=${S3Settings__SecretAccessKey}
