@@ -51,7 +51,15 @@ public partial class S3Controller(IAmazonS3 s3Client, IOptions<S3Settings> s3Set
       }
     };
     await s3Client.PutObjectAsync(putRequest);
-    return Results.Ok(key);
+    var request = new GetPreSignedUrlRequest
+    {
+      BucketName = s3Settings.Value.BucketName,
+      Key = key,
+      Verb = HttpVerb.GET,
+      Expires = DateTime.UtcNow.AddMinutes(15)
+    };
+    var presignedUrl = s3Client.GetPreSignedURL(request);
+    return Results.Ok(new { key, presignedUrl });
   }
 
   [HttpDelete("images/{key}")]
